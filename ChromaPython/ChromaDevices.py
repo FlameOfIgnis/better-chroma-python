@@ -23,7 +23,7 @@ class ChromaDevice():
         return self.base_URI + self._URI
 
     def setEffect(self, effect:str, param=None):
-        logging.pprint(f"Setting {self.__class__.__name__} effect to {effect}", 3)
+        logging.pprint(f"Setting {self.__class__.__name__} effect to {effect}", 5)
         logging.pprint(f"Param: {param}", 6)
         try:
             data = {"effect": effect}
