@@ -7,9 +7,9 @@ import allogate as logging
 class ChromaApp:
     def __init__(self, Info: ChromaAppInfo):
         try:
-            url = 'http://localhost:54235/razer/chromasdk'
+            self.url = 'http://localhost:54235/razer/chromasdk'
 
-            data = {
+            self.data = {
                 "title": Info.Title,
                 "description": Info.Description,
                 "author": {
@@ -19,11 +19,11 @@ class ChromaApp:
                 "device_supported": Info.SupportedDevices,
                 "category": Info.Category
             }
-            logging.pprint("Sending request to /razer/chromasdk", 4)
-            response = requests.post(url=url, json=data)
-            logging.pprint("Received response from /razer/chromasdk", 4)
-            self.SessionID, self.URI = response.json()['sessionid'], response.json()['uri']
 
+            #wait for session to fully initialize
+            self.await_session()
+
+            logging.pprint(f"URI: {self.URI}", 5)
             logging.pprint("Initializing heartbeat", 4)
             self.heartbeat = Heartbeat(self.URI)
             logging.pprint("Initializing keyboard", 4)
@@ -41,6 +41,13 @@ class ChromaApp:
         except:
             logging.pprint("ChromaApp Crashed.", 0)
             raise
+    
+    def negotiate_session(self, data):
+        logging.pprint("Sending request to /razer/chromasdk", 4)
+        response = requests.post(url=self.url, json=data)
+        logging.pprint("Received response from /razer/chromasdk", 4)
+        self.SessionID, self.URI = response.json()['sessionid'], response.json()['uri']
+
 
     def Version(self):
         try:
@@ -58,3 +65,18 @@ class ChromaApp:
         logging.pprint("Shutting down Chroma App.", 6)
         self.heartbeat.stop()
         requests.delete(self.URI)
+
+    def await_session(self):
+        self.negotiate_session(self.data)
+
+        #attempt 3 times at session negotiation and give up if it fails.
+        for i in range(3):
+            try:
+                requests.get(self.URI)
+                logging.pprint("Session started", 1)
+                return
+            except:
+                logging.pprint("Timeout reached while waiting for session.")
+                return self.await_session()
+
+        logging.pprint("All renegotiations failed. Cannot start chromaApp session.")
