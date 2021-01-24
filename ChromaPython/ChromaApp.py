@@ -19,40 +19,39 @@ class ChromaApp:
                 "device_supported": Info.SupportedDevices,
                 "category": Info.Category
             }
-            logging.pprint("Sending request to /razer/chromasdk", 6)
+            logging.pprint("Sending request to /razer/chromasdk", 4)
             response = requests.post(url=url, json=data)
-            logging.pprint("Received response from /razer/chromasdk", 6)
+            logging.pprint("Received response from /razer/chromasdk", 4)
             self.SessionID, self.URI = response.json()['sessionid'], response.json()['uri']
 
-            logging.pprint("Initializing heartbeat", 6)
+            logging.pprint("Initializing heartbeat", 4)
             self.heartbeat = Heartbeat(self.URI)
-            logging.pprint("Initializing keyboard", 6)
+            logging.pprint("Initializing keyboard", 4)
             self.Keyboard = Keyboard(self.URI)
-            logging.pprint("Initializing mouse", 6)
+            logging.pprint("Initializing mouse", 4)
             self.Mouse = Mouse(self.URI)
-            logging.pprint("Initializing mousepad", 6)
+            logging.pprint("Initializing mousepad", 4)
             self.Mousepad = Mousepad(self.URI)
-            logging.pprint("Initializing headset", 6)
+            logging.pprint("Initializing headset", 4)
             self.Headset = Headset(self.URI)
-            logging.pprint("Initializing chromalink", 6)
+            logging.pprint("Initializing chromalink", 4)
             self.ChromaLink = ChromaLink(self.URI)
-            logging.pprint("Initializing chromaBcaHandler", 6)
+            logging.pprint("Initializing chromaBcaHandler", 4)
             self.BcaHandler = ChromaBcaHandler()
         except:
-            # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint("ChromaApp Crashed.", 0)
             raise
 
     def Version(self):
         try:
-            logging.pprint("Getting Version", 6)
+            logging.pprint("Getting Version", 4)
             v = requests.get(url='http://localhost:54235/razer/chromasdk').json()['version']
-            logging.pprint(f"Chroma SDK Version: {v}", 6)
+            logging.pprint(f"Chroma SDK Version: {v}", 4)
             return 
 
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def __del__(self):

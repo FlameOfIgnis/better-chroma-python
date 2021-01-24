@@ -147,7 +147,7 @@ class ChromaBcaHandler:
                 return binary_file
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def encode(self):
@@ -180,7 +180,7 @@ class ChromaBcaHandler:
             return animation
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def generateKeypadAnimation(self, binary_file=BinaryFile):

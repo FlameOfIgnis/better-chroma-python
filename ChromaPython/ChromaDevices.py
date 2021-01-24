@@ -23,6 +23,8 @@ class ChromaDevice():
         return self.base_URI + self._URI
 
     def setEffect(self, effect:str, param=None):
+        logging.pprint(f"Setting {self.__class__.__name__} effect to {effect}", 3)
+        logging.pprint(f"Param: {param}", 6)
         try:
             data = {"effect": effect}
             if(param):
@@ -30,7 +32,7 @@ class ChromaDevice():
             return checkresult(requests.put(url=self.URI, json=data).json())
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def setStatic(self, color: ChromaColor):
@@ -123,7 +125,7 @@ class Keyboard(ChromaDevice2D):
             return True
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def playAnimation(self, animation: ChromaAnimation):

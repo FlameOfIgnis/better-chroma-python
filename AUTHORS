@@ -1,3 +1,16 @@
+
+I'll be maintaining my own version of razer-sdk at my own fork.
+https://github.com/FlameOfIgnis/better-chroma-python
+
+For this fork;
+MAIN AUTHORS:
+ * Ata Hakcil <Ignis>
+  - Look at me, I'm the captain now
+
+Below, is the original AUTHORS file from the original repo.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ChromaPython is an opensource python library for the Razer Chroma REST-API.
 
 If you have questions about this repository and/or want to contribute, please contact anyone in the MAIN AUTHORS group.

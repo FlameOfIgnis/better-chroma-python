@@ -13,7 +13,7 @@ def checkresult(result):
             return False, result['result']
     except:
         # TODO Add proper exception handling
-        print('Unexpected Error!')
+        logging.pprint('Unexpected Error!')
         raise
 
 
@@ -28,7 +28,7 @@ class Heartbeat(object):
             thread.start()
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def stop(self):
@@ -39,10 +39,10 @@ class Heartbeat(object):
             while self.go:
                 logging.pprint(f"Sending heartbeat", 6)
                 requests.put(self.URI + '/heartbeat').json()
-                sleep(1)
+                sleep(10)
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
 
@@ -70,11 +70,11 @@ class ChromaColor:
 
         except:
             # TODO Add proper exception handling
-            print("Unexpected Error!")
+            logging.pprint("Unexpected Error!")
             raise
 
     def set(self, red=None, green=None, blue=None, hexcolor=None):
-        logging.pprint(f"Setting chroma-color to {red},{green},{blue}", 5)
+        logging.pprint(f"Setting chroma-color to {red},{green},{blue}", 6)
         try:
             if None not in (red, blue, green):
                 if not 0 <= red <= 255:
@@ -104,7 +104,7 @@ class ChromaColor:
                 return True
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error at set!')
             raise
 
     def getRGB(self):
@@ -112,7 +112,7 @@ class ChromaColor:
             return self._red, self._green, self._blue
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def getHexBGR(self):
@@ -120,7 +120,7 @@ class ChromaColor:
             return '%02x%02x%02x' % (self._blue, self._green, self._red)
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
     def getHexRGB(self):
@@ -128,7 +128,7 @@ class ChromaColor:
             return '%02x%02x%02x' % (self._red, self._green, self._blue)
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
 
 
@@ -149,7 +149,7 @@ class ChromaGrid:
 
     def rearrange(self, type: str):
         if not type in self._types:
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
         else:
             self._type = self._types[type]
@@ -187,5 +187,5 @@ class ChromaKey:
             self._Color = Color
         except:
             # TODO Add proper exception handling
-            print('Unexpected Error!')
+            logging.pprint('Unexpected Error!')
             raise
