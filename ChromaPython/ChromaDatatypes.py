@@ -2,8 +2,10 @@ from time import sleep
 import threading
 import requests
 
+import allogate as logging 
 
 def checkresult(result):
+    logging.pprint(f"Checking result for {result}", 6)
     try:
         if result['result'] == 0:
             return True, result['result']
@@ -20,6 +22,7 @@ class Heartbeat(object):
         try:
             self.URI = URI
             self.go = True
+            logging.pprint(f"Starting Heartbeat thread", 3)
             thread = threading.Thread(target=self.run, args=())
             thread.daemon = True
             thread.start()
@@ -34,6 +37,7 @@ class Heartbeat(object):
     def run(self):
         try:
             while self.go:
+                logging.pprint(f"Sending heartbeat", 6)
                 requests.put(self.URI + '/heartbeat').json()
                 sleep(1)
         except:
@@ -70,6 +74,7 @@ class ChromaColor:
             raise
 
     def set(self, red=None, green=None, blue=None, hexcolor=None):
+        logging.pprint(f"Setting chroma-color to {red},{green},{blue}", 5)
         try:
             if None not in (red, blue, green):
                 if not 0 <= red <= 255:

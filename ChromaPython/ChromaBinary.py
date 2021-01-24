@@ -1,7 +1,7 @@
 import struct
 from enum import Enum
 from .ChromaDatatypes import ChromaColor
-
+import allogate as logging
 
 class ChromaAnimation:
     def __init__(self):
@@ -82,16 +82,22 @@ class BinaryFrame:
 
 class ChromaBcaHandler:
     def decode(self, filename: str):
+        logging.pprint(f"Decode called for {filename}", 4)
         try:
             with open(filename, "rb") as f:
                 binary_file = BinaryFile()
 
+                
                 """Reading FileHeader"""
+                logging.pprint(f"Unpacking fileHeader: {filename}", 5)
                 binary_file.FHeader.ftype = struct.unpack("<H", f.read(2))[0]
                 binary_file.FHeader.fsize = struct.unpack("<L", f.read(4))[0]
                 binary_file.FHeader.fReserved = struct.unpack("<L", f.read(4))[0]
                 binary_file.FHeader.fBcaOffset = struct.unpack("<L", f.read(4))[0]
+
+                
                 """Reading BCAHeader"""
+                logging.pprint(f"Unpacking BCAHeader: {filename}", 5)
                 binary_file.BHeader.hSize = struct.unpack("<L", f.read(4))[0]
                 binary_file.BHeader.hVersion = struct.unpack("<H", f.read(2))[0]
                 binary_file.BHeader.hFrameOffset = struct.unpack("<L", f.read(4))[0]
@@ -100,7 +106,7 @@ class ChromaBcaHandler:
                 binary_file.BHeader.hReserved = struct.unpack("<H", f.read(2))[0]
 
                 """Reading Frame"""
-
+                logging.pprint(f"Reading Frame: {filename}", 5)
                 for h in range(0, int(binary_file.BHeader.hFrameCount)):
                     binary_file.FrameList.append(BinaryFrame())
                 for i in range(0, int(binary_file.BHeader.hFrameCount)):
@@ -149,6 +155,7 @@ class ChromaBcaHandler:
         pass
 
     def generateKeyboardAnimation(self, binary_file: BinaryFile):
+        logging.pprint(f"Generating Keyboard Animation", 4)
         try:
             animation = ChromaAnimation()
             animation.FPS = binary_file.BHeader.hFPS
