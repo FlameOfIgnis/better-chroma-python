@@ -42,8 +42,8 @@ class Heartbeat(object):
                 sleep(10)
         except:
             # TODO Add proper exception handling
-            logging.pprint('Unexpected Error!')
-            raise
+            logging.pprint('Heartbeat stopped. Terminating the application')
+            exit(1)
 
 
 class ChromaAppInfo:
