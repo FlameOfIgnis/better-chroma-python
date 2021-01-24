@@ -2,7 +2,7 @@ import requests
 from .ChromaBinary import ChromaBcaHandler
 from .ChromaDevices import Keyboard, Mouse, Mousepad, ChromaLink, Headset
 from .ChromaDatatypes import Heartbeat, ChromaAppInfo
-
+import allogate as logging
 
 class ChromaApp:
     def __init__(self, Info: ChromaAppInfo):
@@ -19,14 +19,24 @@ class ChromaApp:
                 "device_supported": Info.SupportedDevices,
                 "category": Info.Category
             }
+            logging.pprint("Sending request to /razer/chromasdk", 6)
             response = requests.post(url=url, json=data)
+            logging.pprint("Received response from /razer/chromasdk", 6)
             self.SessionID, self.URI = response.json()['sessionid'], response.json()['uri']
+
+            logging.pprint("Initializing heartbeat", 6)
             self.heartbeat = Heartbeat(self.URI)
+            logging.pprint("Initializing keyboard", 6)
             self.Keyboard = Keyboard(self.URI)
+            logging.pprint("Initializing mouse", 6)
             self.Mouse = Mouse(self.URI)
+            logging.pprint("Initializing mousepad", 6)
             self.Mousepad = Mousepad(self.URI)
+            logging.pprint("Initializing headset", 6)
             self.Headset = Headset(self.URI)
+            logging.pprint("Initializing chromalink", 6)
             self.ChromaLink = ChromaLink(self.URI)
+            logging.pprint("Initializing chromaBcaHandler", 6)
             self.BcaHandler = ChromaBcaHandler()
         except:
             # TODO Add proper exception handling
@@ -35,13 +45,17 @@ class ChromaApp:
 
     def Version(self):
         try:
-            return requests.get(url='http://localhost:54235/razer/chromasdk').json()['version']
+            logging.pprint("Getting Version", 6)
+            v = requests.get(url='http://localhost:54235/razer/chromasdk').json()['version']
+            logging.pprint(f"Chroma SDK Version: {v}", 6)
+            return 
+
         except:
             # TODO Add proper exception handling
             print('Unexpected Error!')
             raise
 
     def __del__(self):
-        print('Im dying')
+        logging.pprint("Shutting down Chroma App.", 6)
         self.heartbeat.stop()
         requests.delete(self.URI)
