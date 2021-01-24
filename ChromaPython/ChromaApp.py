@@ -3,7 +3,7 @@ from .ChromaBinary import ChromaBcaHandler
 from .ChromaDevices import Keyboard, Mouse, Mousepad, ChromaLink, Headset
 from .ChromaDatatypes import Heartbeat, ChromaAppInfo
 import allogate as logging
-
+import time
 class ChromaApp:
     def __init__(self, Info: ChromaAppInfo):
         try:
@@ -74,6 +74,7 @@ class ChromaApp:
             try:
                 requests.get(self.URI)
                 logging.pprint("Session started", 1)
+                time.sleep(0.25)
                 return
             except:
                 logging.pprint("Timeout reached while waiting for session.")
